@@ -1,4 +1,4 @@
-# rockpaperscissors
+# Rock Paper Scissors
 
 A new Flutter project.
 
