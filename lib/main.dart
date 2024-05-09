@@ -129,14 +129,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(results, style: scoreStyle,),
               ElevatedButton(
-                onPressed: (){
-                  setState(() {
-                    path = 'lib/images/question.png';
-                    results = 'Rock Paper Scissors';
-                    pScore = 0;
-                    comScore = 0;                    
-                  });
-                },
+                onPressed: reset,
                 child: Text('Reset Score', style: endStyle),
               )
             ],
@@ -146,6 +139,15 @@ class _HomePageState extends State<HomePage> {
         
       )
     );
+  }
+
+  void reset(){
+    setState(() {
+        path = 'lib/images/question.png';
+        results = 'Rock Paper Scissors';
+        pScore = 0;
+        comScore = 0;                    
+    });
   }
 
   Column iconColumn(var path) {
