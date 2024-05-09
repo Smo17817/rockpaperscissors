@@ -33,15 +33,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  var scoreStyle = const TextStyle(color: Colors.white, fontSize: 30);
-  var endStyle = const TextStyle(color: Colors.black, fontSize: 30);
+  // Text Style
+  var scoreStyle = const TextStyle(color: Colors.white, fontSize: 25);
+  var endStyle = const TextStyle(color: Colors.black, fontSize: 20);
   var labelStyle = const TextStyle(color: Colors.black, fontSize: 20);
+
+  // Button Style
+  var buttonStyle = ElevatedButton.styleFrom(
+    backgroundColor: Colors.white, 
+    shape: const CircleBorder(),
+  );
+
+  // Icon Style
+  double iconDim = 40;
+  double comImgDim = 200;
+  var iconColor = Colors.grey[900];
+
+  // Business Logic
   int randomValue = Random().nextInt(3);
   int pScore = 0;
   int comScore = 0;
   var path = 'lib/images/question.png';
-  double iconDim = 50;
-  double comImgDim = 200;
+  var results = 'Rock Paper Scissors';
 
   @override
   Widget build(BuildContext context) {
@@ -51,81 +64,81 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey[900],
         body:  Column(children: [
           // SCORE ROW
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text('Player', style: scoreStyle,),
-                  Text(pScore.toString(), style: scoreStyle),
-                ],
-              ),
-              const SizedBox(width: 50),
-              Column(
-                children: [
-                  Text('Computer', style: scoreStyle,),
-                  Text(comScore.toString(), style: scoreStyle,),
-                ],
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text('Player', style: scoreStyle,),
+                    Text(pScore.toString(), style: scoreStyle),
+                  ],
+                ),
+                const SizedBox(width: 50),
+                Column(
+                  children: [
+                    Text('Computer', style: scoreStyle,),
+                    Text(comScore.toString(), style: scoreStyle,),
+                  ],
+                ),
+              ],
+            ),
           ),
       
           Padding(
-            padding: const EdgeInsets.all(100),
+            padding: const EdgeInsets.symmetric(vertical: 80),
             child: Image.asset(path, width: comImgDim, color: Colors.white),
           ),
 
           Padding(
-            padding: const EdgeInsets.all(50),
+            padding: const EdgeInsets.symmetric(vertical: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton.icon(
+                ElevatedButton(
                   onPressed: () {
                   rockpaperscissors(0);
                   }, 
-                  icon: Image.asset(
-                    'lib/images/rock.png', 
-                    color: Colors.black,
-                    fit: BoxFit.scaleDown,
-                    width: iconDim,
-                  ),
-                  label: Text('Rock', style: labelStyle),      
+                  style: buttonStyle,
+                  child: iconColumn('lib/images/rock.png'),
                 ),
-                const SizedBox(width: 30),
-                ElevatedButton.icon(
+                const SizedBox(width: 10),
+                ElevatedButton(
                   onPressed: () {
                   rockpaperscissors(1);
                   }, 
-                  icon: Image.asset(
-                    'lib/images/paper.png', 
-                    color: Colors.black,
-                    fit: BoxFit.scaleDown,
-                    width: iconDim,
-                  ),
-                  label: Text('Paper', style: labelStyle),      
+                  style: buttonStyle, 
+                  child: iconColumn('lib/images/paper.png')    
                 ),
-                const SizedBox(width: 30),
-                ElevatedButton.icon(
+                const SizedBox(width: 10),
+                ElevatedButton(
                   onPressed: () {
                   rockpaperscissors(2);
                   }, 
-                  icon: Image.asset(
-                    'lib/images/scissors.png', 
-                    color: Colors.black,
-                    fit: BoxFit.scaleDown,
-                    width: iconDim,
-                  ),
-                  label: Text('Scissors', style: labelStyle),      
+                  style: buttonStyle,
+                  child: iconColumn('lib/images/scissors.png'),
+                       
                 ),
               ],
             ),
           ),
         
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Rock Paper Scissors', style: scoreStyle,),
+              Text(results, style: scoreStyle,),
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    path = 'lib/images/question.png';
+                    results = 'Rock Paper Scissors';
+                    pScore = 0;
+                    comScore = 0;                    
+                  });
+                },
+                child: Text('Reset Score', style: endStyle),
+              )
             ],
           ),
         ],),
@@ -134,6 +147,24 @@ class _HomePageState extends State<HomePage> {
       )
     );
   }
+
+  Column iconColumn(var path) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 8),
+        Image.asset(
+          path, 
+          color: iconColor,
+          fit: BoxFit.scaleDown,
+          width: iconDim,
+        ),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+
 
   void rockpaperscissors(int value){
     setState((){
@@ -174,21 +205,7 @@ class _HomePageState extends State<HomePage> {
   void endDialog(int ending){
     var endings = ['YOU WIN', 'YOU LOSE', 'DRAW'];
 
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(endings[ending], style: endStyle,),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: Navigator.of(context).pop, // deletes the barrier
-              child: Text('Play Again', style: endStyle,),
-            ),
-          ],  
-        );
-      }
-    );
+    results = endings[ending];
   }
 
   void updatePath(){
@@ -203,8 +220,3 @@ class _HomePageState extends State<HomePage> {
   }
 
 }
-
-
-
-
-
